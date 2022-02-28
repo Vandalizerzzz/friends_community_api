@@ -1,6 +1,7 @@
 package org.csu.community.controller;
 
 import org.csu.community.common.ApiResult;
+import org.csu.community.model.dto.LoginDTO;
 import org.csu.community.model.dto.RegisterDTO;
 import org.csu.community.model.entity.UmsUser;
 import org.csu.community.service.IUmsUserService;
@@ -32,5 +33,17 @@ public class UmsUserController extends BaseController {
         Map<String,Object> map = new HashMap<>(16);
         map.put("user",user);
         return ApiResult.success(map);//前端没有用到该返回值
+    }
+
+    @PostMapping("/login")
+    public ApiResult<Map<String,String>> login(@Valid @RequestBody LoginDTO dto){
+        String token = userService.login(dto);
+        if (ObjectUtils.isEmpty(token)){
+            return ApiResult.failed("用户名或密码错误");
+        }
+
+        Map<String,String> map = new HashMap<>(16);
+        map.put("token",token);
+        return ApiResult.success(map,"登录成功");
     }
 }

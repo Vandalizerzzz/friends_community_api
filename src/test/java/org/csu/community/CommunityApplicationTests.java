@@ -2,6 +2,7 @@ package org.csu.community;
 
 import org.csu.community.model.entity.BmsBillboard;
 import org.csu.community.service.IBmsBillboardService;
+import org.csu.community.service.IUmsUserService;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ class CommunityApplicationTests {
 
     @Autowired
     IBmsBillboardService service;
+
+    @Autowired
+    IUmsUserService service2;
     @Test
     void contextLoads() {
-        BmsBillboard billboard= new BmsBillboard(2,"shit",new Date(),true);
-        service.save(billboard);
+        service2.getUserByUsername("aaa");
     }
 
 }
