@@ -1,16 +1,15 @@
 package org.csu.community.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.csu.community.common.ApiResult;
 import org.csu.community.model.dto.LoginDTO;
 import org.csu.community.model.dto.RegisterDTO;
 import org.csu.community.model.entity.UmsUser;
 import org.csu.community.service.IUmsUserService;
+import org.csu.community.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -45,5 +44,14 @@ public class UmsUserController extends BaseController {
         Map<String,String> map = new HashMap<>(16);
         map.put("token",token);
         return ApiResult.success(map,"登录成功");
+    }
+
+    @GetMapping("/info")
+    public ApiResult<UmsUser> getUser(@RequestHeader(JwtUtil.USER_NAME) String userName){
+        UmsUser user = userService.getOne(new LambdaQueryWrapper<UmsUser>()
+        .eq(UmsUser::getUsername,userName));
+
+        System.out.println();
+        return ApiResult.success(user);
     }
 }
